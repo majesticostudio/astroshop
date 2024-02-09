@@ -48,8 +48,8 @@ dependencies:
     specifier: ^4.3.5
     version: 4.3.5
   gsap:
-    specifier: ^3.12.5
-    version: 3.12.5
+    specifier: npm:@gsap/business@^3.12.5
+    version: /@gsap/business@3.12.5
   preact:
     specifier: ^10.19.4
     version: 10.19.4
@@ -970,6 +970,10 @@ packages:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
       graphql: 16.8.1
+    dev: false
+
+  /@gsap/business@3.12.5:
+    resolution: {integrity: sha512-MaoS/j4c+ZHCzkA0C1hWah3E0PTBOaevgJCD4ccad7FePaFcVyC1RSXi67GZQNntMTb03crXB+8CKXL490L6GQ==}
     dev: false
 
   /@iarna/toml@2.2.5:
@@ -4170,10 +4174,6 @@ packages:
       kind-of: 6.0.3
       section-matter: 1.0.0
       strip-bom-string: 1.0.0
-    dev: false
-
-  /gsap@3.12.5:
-    resolution: {integrity: sha512-srBfnk4n+Oe/ZnMIOXt3gT605BX9x5+rh/prT2F1SsNJsU1XuMiP0E2aptW481OnonOGACZWBqseH5Z7csHxhQ==}
     dev: false
 
   /has-flag@3.0.0:
