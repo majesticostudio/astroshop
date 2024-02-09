@@ -1,0 +1,53 @@
+---
+const { class: className } = Astro.props;
+---
+
+<!-- The best thing? It's all in one -->
+<div id="tagline" class:list={["section py-48 tagline-section relative text-black mx-auto px-8 md:px-12", className]}>
+	<div class="text col-span-12 flex font-light">
+		<p id="services-tagline" class="uppercase text-center font-bold text-4xl md:text-5xl lg:text-9xl">
+			Stay Hydrated and Eco-Friendly with Every Stylish Sip
+		</p>
+	</div>
+</div>
+
+<style>
+	.text > p > :global(div) {
+		background: linear-gradient(to right, rgb(0, 0, 0) 50%, rgb(131, 131, 131) 50%);
+		background-size: 200% 100%;
+		background-position-x: 100%;
+		color: transparent;
+		background-clip: text;
+		-webkit-background-clip: text;
+		line-height: 1.2;
+	}
+</style>
+
+<script>
+	import { gsap } from "gsap";
+	import { ScrollTrigger } from "gsap/ScrollTrigger";
+	import { SplitText } from "gsap/SplitText";
+
+	gsap.registerPlugin(ScrollTrigger, SplitText);
+
+	function init() {
+		const split = new SplitText("#services-tagline", { type: "lines" });
+
+		split.lines.forEach((target) => {
+			gsap.to(target, {
+				backgroundPositionX: 0,
+				ease: "none",
+				scrollTrigger: {
+					trigger: target,
+					markers: false,
+					scrub: 1,
+					start: "top bottom-=30%",
+					end: "bottom bottom-=20%",
+				},
+			});
+		});
+	}
+
+	document.removeEventListener("DOMContentLoaded", init); // astro:page-load
+	document.addEventListener("DOMContentLoaded", init); // astro:page-load
+</script>

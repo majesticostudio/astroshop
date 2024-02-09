@@ -1,0 +1,154 @@
+<div id="object-3d">
+	<canvas id="canvas3d"></canvas>
+</div>
+
+<style>
+	#object-3d {
+		top: 50%;
+		left: 50%;
+		position: absolute;
+		z-index: 10;
+		pointer-events: none;
+		transform: translate(-50%, -50%);
+	}
+</style>
+
+<script>
+	import { gsap } from "gsap";
+	import { ScrollTrigger } from "gsap/ScrollTrigger";
+	import { Application } from "@splinetool/runtime";
+
+	gsap.registerPlugin(ScrollTrigger);
+
+	function init() {
+		const canvas = document.getElementById("canvas3d") as HTMLCanvasElement;
+		const spline = new Application(canvas);
+
+		spline.load("/object/scene.splinecode").then(() => {
+			const waterbollte = spline.findObjectByName("Waterbollte");
+
+			// TODO: calcolare dinamicamente
+			gsap.set("#object-3d", {});
+
+			gsap.to(waterbollte.rotation, { y: Math.PI * 2, repeat: -1, ease: "none", duration: 10 });
+
+			gsap.timeline({
+				defaults: {
+					duration: 2,
+					ease: "back.out(1.4)",
+				},
+			})
+				.to(waterbollte?.position, { x: 0 })
+				.to(waterbollte?.rotation, { z: 0.2 }, "<");
+
+			gsap.fromTo(
+				"#object-3d",
+				{
+					x: 700,
+				},
+				{
+					scrollTrigger: {
+						trigger: "#features",
+						start: "top center",
+						end: "bottom bottom",
+						markers: false,
+						scrub: 1,
+					},
+					x: 0,
+				}
+			);
+
+			// Pin the element
+			ScrollTrigger.create({
+				trigger: "header",
+				endTrigger: "#tagline",
+				start: "top top",
+				end: "bottom bottom",
+				pin: "#object-3d",
+				markers: false,
+			});
+
+			// For ease of use handle here all the movements thought the page
+
+			// const chair = spline.findObjectByName("chair");
+			// const bed = spline.findObjectByName("Bed");
+			// const table = spline.findObjectByName("table");
+			// const piupiu = spline.findObjectByName("PIUPIU");
+			// const objects = [sofa, chair, bed, table, piupiu];
+			// const objectsNoSofa = [chair, bed, table, piupiu];
+			// const rotateSofa = gsap.to(sofa.rotation, 10, { y: Math.PI * 2, repeat: -1, ease: "none" });
+			// const rotateChair = gsap.to(chair.rotation, 10, { y: Math.PI * 2, repeat: -1, ease: "none" });
+			// const rotateBed = gsap.to(bed.rotation, 10, { y: Math.PI * 2, repeat: -1, ease: "none" });
+			// const rotateTable = gsap.to(table.rotation, 10, { y: Math.PI * 2, repeat: -1, ease: "none" });
+			// const rotateBookshelf = gsap.to(piupiu.rotation, 5, { y: Math.PI * 2, repeat: -1, ease: "none" });
+			// function reduceObjects(duration) {
+			// 	objects.forEach((object) => {
+			// 		gsap.to(object.scale, duration, { x: 0, y: 0, z: 0, ease: "expo.inOut" });
+			// 		gsap.to(object.rotation, duration, { x: Math.PI, ease: "expo.inOut" });
+			// 	});
+			// }
+			// function reduceObjectsNoSofa(duration) {
+			// 	objectsNoSofa.forEach((object) => {
+			// 		gsap.to(object.scale, duration, { x: 0, y: 0, z: 0, ease: "expo.out" });
+			// 		gsap.to(object.rotation, duration, { x: Math.PI, ease: "expo.out" });
+			// 	});
+			// }
+			// function showObject(object, scale) {
+			// 	reduceObjects(1);
+			// 	gsap.to(object.scale, 1, { x: scale, y: scale, z: scale, delay: 1, ease: "expo.inOut" });
+			// 	gsap.to(object.rotation, 1, { x: Math.PI * 2, delay: 1, ease: "expo.inOut" });
+			// }
+			// objects.forEach((object) => {
+			// 	gsap.set(object.scale, { x: 0, y: 0, z: 0 });
+			// });
+			// gsap.set(sofa.position, { x: 400 });
+			// gsap.set(sofa.scale, { x: 0.5, y: 0.5, z: 0.5 });
+			// var firstTL = gsap.timeline({
+			// 	scrollTrigger: {
+			// 		trigger: ".title",
+			// 		start: () => window.innerHeight + " bottom",
+			// 		end: () => window.innerHeight * 1.5 + " bottom",
+			// 		scrub: 2,
+			// 		onEnter: () => {
+			// 			spline.emitEvent("mouseDown", "sofa");
+			// 		},
+			// 		onEnterBack: () => {
+			// 			reduceObjectsNoSofa(1);
+			// 			spline.emitEvent("mouseDown", "sofa");
+			// 		},
+			// 		onLeave: () => {
+			// 			spline.emitEvent("mouseUp", "sofa");
+			// 		},
+			// 		onLeaveBack: () => {
+			// 			spline.emitEvent("mouseUp", "sofa");
+			// 		},
+			// 	},
+			// });
+			// firstTL.to(sofa.scale, { x: 1, y: 1, z: 1 }, 0);
+			// firstTL.to(sofa.position, { x: 0 }, 0);
+			// firstTL.to(sofa.rotation, { x: Math.PI * 2 }, 0);
+			// document.getElementById("toChair").addEventListener("click", () => {
+			// 	showObject(chair, 1);
+			// });
+			// document.getElementById("toBed").addEventListener("click", () => {
+			// 	showObject(bed, 1.5);
+			// });
+			// document.getElementById("toTable").addEventListener("click", () => {
+			// 	showObject(table, 0.75);
+			// });
+			// document.getElementById("toPIUPIU").addEventListener("click", () => {
+			// 	showObject(piupiu, 1.25);
+			// });
+			// var resizeTimeout = setTimeout(0);
+			// window.addEventListener("resize", function () {
+			// 	clearTimeout(resizeTimeout);
+			// 	resizeTimeout = setTimeout(function () {
+			// 		reduceObjectsNoSofa(1);
+			// 	}, 500);
+			// });
+		});
+	}
+
+	document.removeEventListener("DOMContentLoaded", init); // astro:page-load
+	document.addEventListener("DOMContentLoaded", init); // astro:page-load
+</script>

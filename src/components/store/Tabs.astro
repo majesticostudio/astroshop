@@ -1,0 +1,166 @@
+---
+import { latest } from "../../data/latest.json";
+import { icons } from "../../data/icons.json";
+import { wallpapers } from "../../data/wallpapers.json";
+---
+
+<section>
+	<div class="px-8 py-12 mx-auto max-w-7xl md:px-12 relative">
+		<div
+			x-data={`{
+                tabSelected: 1,
+                tabId: $id('tabs'),
+                tabButtonClicked(tabButton){
+                    this.tabSelected = tabButton.id.replace(this.tabId + '-', '');
+                    this.tabRepositionMarker(tabButton);
+                },
+                tabRepositionMarker(tabButton){
+                    this.$refs.tabMarker.style.width=tabButton.offsetWidth + 'px';
+                    this.$refs.tabMarker.style.height=tabButton.offsetHeight + 'px';
+                    this.$refs.tabMarker.style.left=tabButton.offsetLeft + 'px';
+                },
+                tabContentActive(tabContent){
+                    return this.tabSelected == tabContent.id.replace(this.tabId + '-content-', '');
+                }
+            }`}
+			x-init="tabRepositionMarker($refs.tabButtons.firstElementChild);">
+			<div
+				x-ref="tabButtons"
+				class="relative inline-grid items-center justify-center w-full h-10 lg:h-12 grid-cols-3 p-1 text-black bg-white border rounded-xl select-none">
+				<button
+					:id="$id(tabId)"
+					@click="tabButtonClicked($el);"
+					type="button"
+					:class="{ 'bg-gray-100 text-black' : tabButtonActive($el) }"
+					class="relative z-20 inline-flex items-center justify-center w-full h-8 px-3 lg:h-10 text-sm font-medium transition-all rounded-xl cursor-pointer whitespace-nowrap">
+					Lates products
+				</button>
+				<button
+					:id="$id(tabId)"
+					@click="tabButtonClicked($el);"
+					type="button"
+					:class="{ 'bg-gray-100 text-black' : tabButtonActive($el) }"
+					class="relative z-20 inline-flex items-center justify-center w-full h-8 px-3 lg:h-10 text-sm font-medium transition-all rounded-xl cursor-pointer whitespace-nowrap">
+					Icons
+				</button>
+				<button
+					:id="$id(tabId)"
+					@click="tabButtonClicked($el);"
+					type="button"
+					:class="{ 'bg-gray-100 text-black' : tabButtonActive($el) }"
+					class="relative z-20 inline-flex items-center justify-center w-full h-8 px-3 lg:h-10 text-sm font-medium transition-all rounded-xl cursor-pointer whitespace-nowrap">
+					Wallpapers
+				</button>
+				<div x-ref="tabMarker" class="absolute left-0 z-10 w-1/2 h-full duration-300 ease-out" x-cloak>
+					<div class="w-full h-full bg-gray-100 rounded-lg shadow-sm"></div>
+				</div>
+			</div>
+			<div class="justify-center w-full mt-2">
+				<div :id="$id(tabId + '-content')" x-show="tabContentActive($el)" class="relative">
+					<div class="grid md:grid-cols-2 lg:grid-cols-3 mt-12 gap-2 gap-y-12 lg:gap-y-24">
+						{
+							latest.map((template) => (
+								<>
+									<div class="group relative border bg-white rounded-xl overflow-hidden">
+										<div class="aspect-h-3 aspect-w-4 overflow-hidden  bg-gray-100">
+											<img src={template.image} alt={template.description} class="object-cover object-center" />
+											<div
+												class="flex items-end p-4 opacity-0 bg-white/10 backdrop-blur group-hover:opacity-100 duration-200"
+												aria-hidden="true">
+												<div class="items-center text-sm group active:bg-gray-100 active:text-gray-900/60 active:transition-none border font-medium gap-2 inline-flex justify-center outline-offset-2 px-6 py-2 transition w-full bg-white hover:bg-gray-50 text-black  rounded-lg">
+													Learn more
+												</div>
+											</div>
+										</div>
+										<div class="p-4">
+											<div class=" flex items-center justify-between space-x-8 text-base font-medium text-black">
+												<h3>
+													<a href={template.link}>
+														<span aria-hidden="true" class="absolute inset-0" />
+														{template.description}
+													</a>
+												</h3>
+												<p>{template.price}</p>
+											</div>
+											<p class="mt-1 text-sm text-gray-600">{template.tag}</p>
+										</div>
+									</div>
+								</>
+							))
+						}
+					</div>
+				</div>
+
+				<div :id="$id(tabId + '-content')" x-show="tabContentActive($el)" class="relative" x-cloak>
+					<div class="grid md:grid-cols-2 lg:grid-cols-3 mt-12 gap-2 gap-y-12 lg:gap-y-24">
+						{
+							icons.slice(0, 3).map((template) => (
+								<>
+									<div class="group relative border bg-white rounded-xl overflow-hidden">
+										<div class="aspect-h-3 aspect-w-4 overflow-hidden  bg-gray-100">
+											<img src={template.image} alt={template.description} class="object-cover object-center" />
+											<div
+												class="flex items-end p-4 opacity-0 bg-white/10 backdrop-blur group-hover:opacity-100 duration-200"
+												aria-hidden="true">
+												<div class="items-center text-sm group active:bg-gray-100 active:text-gray-900/60 active:transition-none border font-medium gap-2 inline-flex justify-center outline-offset-2 px-6 py-2 transition w-full bg-white hover:bg-gray-50 text-black  rounded-lg">
+													Learn more
+												</div>
+											</div>
+										</div>
+										<div class="p-4">
+											<div class=" flex items-center justify-between space-x-8 text-base font-medium text-black">
+												<h3>
+													<a href={template.link}>
+														<span aria-hidden="true" class="absolute inset-0" />
+														{template.description}
+													</a>
+												</h3>
+												<p>{template.price}</p>
+											</div>
+											<p class="mt-1 text-sm text-gray-600">{template.tag}</p>
+										</div>
+									</div>
+								</>
+							))
+						}
+					</div>
+				</div>
+
+				<div :id="$id(tabId + '-content')" x-show="tabContentActive($el)" class="relative" x-cloak>
+					<div class="grid md:grid-cols-2 lg:grid-cols-3 mt-12 gap-2 gap-y-12 lg:gap-y-24">
+						{
+							wallpapers.slice(0, 3).map((template) => (
+								<>
+									<div class="group relative border bg-white rounded-xl overflow-hidden">
+										<div class="aspect-h-3 aspect-w-4 overflow-hidden  bg-gray-100">
+											<img src={template.image} alt={template.description} class="object-cover object-center" />
+											<div
+												class="flex items-end p-4 opacity-0 bg-white/10 backdrop-blur group-hover:opacity-100 duration-200"
+												aria-hidden="true">
+												<div class="items-center text-sm group active:bg-gray-100 active:text-gray-900/60 active:transition-none border font-medium gap-2 inline-flex justify-center outline-offset-2 px-6 py-2 transition w-full bg-white hover:bg-gray-50 text-black  rounded-lg">
+													Learn more
+												</div>
+											</div>
+										</div>
+										<div class="p-4">
+											<div class=" flex items-center justify-between space-x-8 text-base font-medium text-black">
+												<h3>
+													<a href={template.link}>
+														<span aria-hidden="true" class="absolute inset-0" />
+														{template.description}
+													</a>
+												</h3>
+												<p>{template.price}</p>
+											</div>
+											<p class="mt-1 text-sm text-gray-600">{template.tag}</p>
+										</div>
+									</div>
+								</>
+							))
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

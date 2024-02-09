@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	font-family: Inter, sans-serif;
+	font-feature-settings: "liga" 1, "calt" 1, /* Contextual Alternates */ "dlig" 1, /* Discretionary Ligatures */ "ss07" 1, /* fSquare punctuation */ "ss08" 1,
+		/* Square quotes */ "zero" 1, /* Slashed zero */ "tnum" 1, /* Tabular numbers */ "cv03" 1, /* Open six */ "cv04" 1, /* Open nine */ "cv01" 1,
+		/* Alternate one */ "cv09", /* Flat-top three */ "cv02" 1; /* Open 4 */
+}
+@supports (font-variation-settings: normal) {
+	/* Use variable font if supported */
+	:root {
+		font-family: InterVariable, sans-serif;
+	}
+}
+:root {
+	--astro-code-color-text: #ffffff;
+	--astro-code-color-background: #fafafa;
+	--astro-code-token-constant: #8b8dcd;
+	--astro-code-token-string: #5bc9f4;
+	--astro-code-token-comment: #ffd493;
+	--astro-code-token-keyword: #da68fa;
+	--astro-code-token-parameter: #ffffff;
+	--astro-code-token-function: #23deb6;
+	--astro-code-token-string-expression: lightgray;
+	--astro-code-token-punctuation: #ffffff;
+	--astro-code-token-link: #ffffff;
+}
+
+.prose-styles {
+	@apply hover:prose-a:text-black prose  prose-blockquote:border-l-black prose-blockquote:text-gray-600 prose-code:text-black prose-headings:font-bold prose-headings:text-black prose-headings:tracking-tighter  text-gray-600 prose-pre:rounded-xl prose-pre:p-4;
+}
+
+html {
+	scrollbar-color: black white;
+	scrollbar-width: thin;
+}

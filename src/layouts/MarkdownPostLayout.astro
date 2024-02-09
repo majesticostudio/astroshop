@@ -1,0 +1,96 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import LatestEntries from "@/components/entries/LatestEntries.astro";
+import { getCollection } from "astro:content";
+const allPosts = await getCollection("posts");
+const { frontmatter } = Astro.props;
+---
+
+<script>
+	document.addEventListener("DOMContentLoaded", () => {
+		const headings = document.querySelectorAll(".prose-styles h2,.prose-styles  h3");
+		const tocContainer = document.getElementById("table-of-contents");
+		if (tocContainer && headings.length > 0) {
+			const tocList = document.createElement("ul");
+			tocList.classList.add("space-y-3", "text-xs");
+			headings.forEach((heading) => {
+				const listItem = document.createElement("li");
+				const link = document.createElement("a");
+				link.textContent = heading.textContent;
+				link.href = `#${heading.id}`;
+				link.classList.add("text-gray-600", "uppercase", "hover:text-black", "font-medium");
+				listItem.appendChild(link);
+				tocList.appendChild(listItem);
+			});
+			tocContainer.appendChild(tocList);
+			tocContainer.classList.remove("hidden");
+		}
+	});
+</script>
+<BaseLayout>
+	<section>
+		<div class="items-center px-8 pb-12 mx-auto max-w-7xl md:px-12 lg:pb-24 pt-36">
+			<div class="grid grid-cols-1 gap-12">
+				<div class="pb-5 border-b">
+					<p class="text-xs text-gray-600">
+						{frontmatter.pubDate.toString().slice(0, 10)} by: {frontmatter.author}
+					</p>
+					<p class="text-5xl mt-4 tracking-tighter font-medium text-black">
+						{frontmatter.title}
+					</p>
+					<p class="mt-4 text-lg text-gray-600">
+						<em>{frontmatter.description}</em>
+					</p>
+					<ul class="flex flex-wrap gap-3 mt-4 w-full uppercase">
+						{
+							frontmatter.tags.map((tag) => (
+								<li class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-600/10">
+									<a href={`/tags/${tag}`}>{tag} </a>{" "}
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section>
+		<div class="px-8 py-12 mx-auto max-w-7xl md:px-12">
+			<div class="grid grid-cols-1 lg:grid-cols-4 gap-12">
+				<div>
+					<div id="table-of-contents" class="hidden lg:block lg:sticky lg:top-64 space-y-12">
+						<p class="text-base font-semibold text-black uppercase">Other entries</p>
+						<!-- Your table of contents content here -->
+					</div>
+				</div>
+				<div class="mx-auto order-first lg:order-last lg:col-span-3 prose-styles">
+					<slot />
+				</div>
+			</div>
+		</div>
+	</section>
+	<section>
+		<div class="items-center px-8 py-12 mx-auto max-w-7xl md:px-12 lg:py-24">
+			<div class="border-b border-gray-200 pb-5">
+				<h3 class="text-base font-semibold text-black">From our blog</h3>
+			</div>
+			<ul class="grid md:grid-cols-2 lg:grid-cols-2 mt-12 gap-8 gap-y-12 lg:gap-y-24">
+				{
+					allPosts
+						.slice(0, 2)
+						.map((post) => (
+							<LatestEntries
+								url={"/posts/" + post.slug}
+								title={post.data.title}
+								description={post.data.description}
+								alt={post.data.title}
+								pubDate={post.data.pubDate.toString().slice(0, 10)}
+								author={post.data.author}
+								image={post.data.image.url}
+							/>
+						))
+				}
+			</ul>
+		</div>
+	</section>
+</BaseLayout>

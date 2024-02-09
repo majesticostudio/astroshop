@@ -1,0 +1,49 @@
+---
+import { wallpapers } from "../../data/wallpapers.json";
+---
+
+<section>
+  <div class="px-8 py-12 mx-auto max-w-7xl md:px-12">
+    <div class="border-b border-gray-200 pb-5">
+      <h3 class="text-base font-semibold text-black">Our wallpapers</h3>
+    </div>
+
+    <div
+      class="grid md:grid-cols-2 lg:grid-cols-4 mt-12 gap-2 gap-y-12 lg:gap-y-24">
+      {
+        wallpapers.map((template) => (
+          <>
+            <div class="group relative border bg-white rounded-xl overflow-hidden">
+              <div class="aspect-h-3 aspect-w-4 overflow-hidden  bg-gray-100">
+                <img
+                  src={template.image}
+                  alt={template.description}
+                  class="object-cover object-center"
+                />
+                <div
+                  class="flex items-end p-4 opacity-0 bg-white/10 backdrop-blur group-hover:opacity-100 duration-200"
+                  aria-hidden="true">
+                  <div class="items-center text-sm group active:bg-gray-100 active:text-gray-900/60 active:transition-none border font-medium gap-2 inline-flex justify-center outline-offset-2 px-6 py-2 transition w-full bg-white hover:bg-gray-50 text-black  rounded-lg">
+                    Learn more
+                  </div>
+                </div>
+              </div>
+              <div class="p-4">
+                <div class=" flex items-center justify-between space-x-8 text-base font-medium text-black">
+                  <h3>
+                    <a href={template.link}>
+                      <span aria-hidden="true" class="absolute inset-0" />
+                      {template.description}
+                    </a>
+                  </h3>
+                  <p>{template.price}</p>
+                </div>
+                <p class="mt-1 text-sm text-gray-600">{template.tag}</p>
+              </div>
+            </div>
+          </>
+        ))
+      }
+    </div>
+  </div>
+</section>
