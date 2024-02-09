@@ -1,0 +1,11 @@
+---
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+	const categories = await getCollection("categories");
+	return categories.map((entry) => ({
+		params: { slug: entry.category },
+		props: { entry },
+	}));
+}
+---
